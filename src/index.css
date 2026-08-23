@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color:aquamarine;
+}
+
+header h2 {
+    color: yellow;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color:brown;
+    text-decoration: none;
+}
+.homehead{
+    margin-left: 50px;
+    margin-top: 20px;
+
+}
+.description{
+    margin-left: 50px;
+    margin-top: 15px;
+    margin-right: 50px;
+    font-size: 18px;
+}
+footer{
+    margin-top: auto;
+    background-color: aquamarine;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    height:70px;
+    text-align: center;
+}
+footer h3,
+footer p{
+    margin: 6px 0;
+    font-size: 12px;
+
+}
+main{
+    flex: 1;
+}
+.app{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 30px auto;
+    gap: 10px;
+}
+input,
+textarea
+{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+button{
+    height: 30px;
+    width: 30%;
+    background-color: chocolate;
+}
+.add-product{
+    margin-left: 50px;
+}
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; 
+}
+.logoimg img{
+    width: 50px;
+    height: 50px;
+}
+.homeimgs img{
+    width: 300px;
+    height: 300px;
+    margin-left: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.product-card{
+    border : 1px solid black;
+}
+
+   
+  
