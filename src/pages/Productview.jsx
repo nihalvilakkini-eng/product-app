@@ -1,22 +1,58 @@
-function Productview({products}) {
+import { useNavigate } from "react-router-dom";
+
+function Productview({ products }) {
+
+    const navigate = useNavigate();
+
     return (
-        <main>
-            <h2 className="viewhead">View Products</h2>
+        <div className="container mt-4">
+
+            <h2>View Products</h2>
+
             <div className="row">
+
                 {products.map((product, index) => (
-                    <div className="product-card col-md-3" key={index}>
-                        <h3>{product.name}</h3>
 
-                        <p>Price: ₹{product.price}</p>
+                    <div className="col-md-4 mb-4" key={index}>
 
-                        <p>Category: {product.category}</p>
+                        <div
+                            className="card shadow h-100"
+                            onClick={() => navigate(`/product/${index}`)}
+                            style={{ cursor: "pointer" }}
+                        >
 
-                        <p>{product.description}</p>
+                            <div className="card-body">
+
+                                <h5>{product.name}</h5>
+
+                                <h6>₹{product.price}</h6>
+
+                                <p>{product.category}</p>
+
+                                <p>{product.description}</p>
+
+                                <button
+                                    className="btn btn-warning d-flex justify-content-center align-items-center"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(`/edit-product/${index}`);
+                                    }}
+                                >
+                                    Edit
+                                </button>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 ))}
+
             </div>
-            
-            </main>
-        ); 
+
+        </div>
+    );
 }
+
 export default Productview;

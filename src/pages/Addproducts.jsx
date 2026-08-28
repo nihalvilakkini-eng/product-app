@@ -1,34 +1,56 @@
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+function AddProduct({ addProduct, products, updateProduct }) {
+  const { id } = useParams();
 
-function AddProducts({addProduct}) {
+    const navigate = useNavigate();
 
-    const [product, setProduct] = useState({
-        name: "",
-        price: "",
-        category: "",
-        description: ""
-    });
+    const isEdit = id !== undefined;
 
-
-    const handleChange = (e) => {
+ const [product, setProduct] = useState(
+    isEdit
+        ? products[id]
+        : {
+            name: "",
+            price: "",
+            category: "",
+            description: ""
+        }
+);
+ const handleChange = (e) => {
         setProduct({
             ...product,
             [e.target.name]: e.target.value
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        addProduct(product);
-        setProduct({
-                    name: "",
-                    price: "",
-                    category: "",
-                    description: ""
-                });
-      
-    };
+const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if (
+        product.name.trim() === "" ||
+        product.price === "" ||
+        product.category === "" ||
+        product.description.trim() === ""
+    ) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    if (isEdit) {
+        updateProduct(Number(id), product);
+        navigate("/product-view");
+    } else {
+        addProduct(product);
+
+        setProduct({
+            name: "",
+            price: "",
+            category: "",
+            description: ""
+        });
+    }
+};
     return (
         <div className="add-product">
             <h1>Add Product</h1>
@@ -42,6 +64,8 @@ function AddProducts({addProduct}) {
                     value={product.name}
                     onChange={handleChange}
                     placeholder="Enter product name"
+                     minLength="3"
+                    required
                 />
 
                 <label><b>Price</b></label>
@@ -51,15 +75,18 @@ function AddProducts({addProduct}) {
                     value={product.price}
                     onChange={handleChange}
                     placeholder="Enter price"
+                    required
                 />
 
-                <label><b>Category</b></label>
+                <label><b>Select Your Category</b></label>
                 <select
                     name="category"
                     value={product.category}
                     onChange={handleChange}
+                    required
                 >
-                    <option value="">Select Category</option>
+                      <option value="vehicle">Category</option>
+                    <option value="vehicle">Vehicles</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Clothing">Clothing</option>
                     <option value="Shoes">Shoes</option>
@@ -71,6 +98,8 @@ function AddProducts({addProduct}) {
                     value={product.description}
                     onChange={handleChange}
                     placeholder="Enter product description"
+                    maxLength={200}
+                    required
                 ></textarea>
 
                 <button type="submit">
@@ -82,4 +111,4 @@ function AddProducts({addProduct}) {
     );
 }
 
-export default AddProducts;
+export default AddProduct;

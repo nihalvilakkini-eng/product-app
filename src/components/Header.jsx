@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 
 function Header() {
+    const location = useLocation();
     return (
         <header>
             <div className="logoimg">
@@ -9,9 +10,13 @@ function Header() {
             </a>
             </div>
             <nav>
-                <Link to="/">Home</Link>
+                  {location.pathname !== "/" && (
+                    <Link to="/">Home</Link>
+                )}
+
                 <Link to="/add-product">Add Product</Link>
                 <Link to="/product-view">Product View</Link>
+                <Link to="/product-details">Product Details</Link>
             </nav>
         </header>
     );

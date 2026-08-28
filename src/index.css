@@ -107,7 +107,33 @@ main {
 
 .product-card{
     border : 1px solid black;
+    margin-left: 50px;
+    margin-bottom: 50px;
 }
-
+.viewhead{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+   .shopnow{
+    border: solid 1px;
+    background-color:white;
+    color: chocolate;
+    margin-top: 20px;
+    border-color: chocolate;
+    border-radius: 30px;
+    width: 100px;
+ margin-left: 50px;
+   }
+   .features{
+    display: flex;
+    justify-content: center;
    
-  
+   }
+   .card-img-top{
+    height: 200px;
+   }
+.btn-primary{
+    width: 120px;
+    
+}
