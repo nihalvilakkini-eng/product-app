@@ -1,8 +1,32 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../Api";
 
-function Productview({ products }) {
+function Productview() {
 
     const navigate = useNavigate();
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    const getProducts = async () => {
+        try {
+
+            const response = await api.get("/api/products");
+
+            console.log("Products from backend:", response.data);
+
+            setProducts(response.data.products || response.data);
+
+        } catch (error) {
+
+            console.log("Error fetching products:", error);
+
+        }
+    };
 
     return (
         <div className="container mt-4">
@@ -11,43 +35,61 @@ function Productview({ products }) {
 
             <div className="row">
 
-                {products.map((product, index) => (
+                {products.length === 0 ? (
 
-                    <div className="col-md-4 mb-4" key={index}>
+                    <p>No products found</p>
+
+                ) : (
+
+                    products.map((product) => (
 
                         <div
-                            className="card shadow h-100"
-                            onClick={() => navigate(`/product/${index}`)}
-                            style={{ cursor: "pointer" }}
+                            className="col-md-4 mb-4"
+                            key={product._id}
                         >
 
-                            <div className="card-body">
+                            <div
+                                className="card shadow h-100"
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                    navigate(`/product/${product._id}`)
+                                }
+                            >
 
-                                <h5>{product.name}</h5>
+                                <div className="card-body">
 
-                                <h6>₹{product.price}</h6>
+                                    <h5>{product.name}</h5>
 
-                                <p>{product.category}</p>
+                                    <h6>₹{product.price}</h6>
 
-                                <p>{product.description}</p>
+                                    <p>{product.category}</p>
 
-                                <button
-                                    className="btn btn-warning d-flex justify-content-center align-items-center"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        navigate(`/edit-product/${index}`);
-                                    }}
-                                >
-                                    Edit
-                                </button>
+                                    <p>{product.description}</p>
+
+                                    <button
+                                        className="btn btn-warning"
+                                        onClick={(e) => {
+
+                                            e.stopPropagation();
+
+                                            navigate(
+                                                `/edit-product/${product._id}`
+                                            );
+
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                    ))
 
-                ))}
+                )}
 
             </div>
 

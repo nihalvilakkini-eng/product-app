@@ -1,25 +1,39 @@
-import { Link,useLocation } from "react-router-dom";
-
+import { useNavigate , Link } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 function Header() {
-    const location = useLocation();
-    return (
-        <header>
-            <div className="logoimg">
-            <a href="/">
-           <img src="public/product_9504576.png" alt="site logo"></img>
-            </a>
-            </div>
-            <nav>
-                  {location.pathname !== "/" && (
-                    <Link to="/">Home</Link>
-                )}
+    const navigate = useNavigate();
+const role = localStorage.getItem("role");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+  return (
+    <header>
+      <div className="logoimg">
+        <Link to="/">
+          <img src="/product_9504576.png" alt="site logo" />
+        </Link>
+      </div>
 
-                <Link to="/add-product">Add Product</Link>
-                <Link to="/product-view">Product View</Link>
-                <Link to="/product-details">Product Details</Link>
-            </nav>
-        </header>
-    );
+  <nav>
+  <Link to="/">HOME</Link>
+
+  {role === "admin" && (
+    <>
+      <Link to="/add-product">ADD PRODUCT</Link>
+      <Link to="/product-view">PRODUCTS</Link>
+    </>
+  )}
+  <Link to="/login" onClick={handleLogout}>
+    LOGOUT
+  </Link>
+  
+  <Link to="/profile" className="profile-icon">
+    <FaUserCircle size={28} />
+  </Link>
+</nav>
+    </header>
+  );
 }
 
 export default Header;

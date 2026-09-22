@@ -28,15 +28,21 @@ nav a {
     color:brown;
     text-decoration: none;
 }
+nav a:hover {
+    background-color: #ddd;
+   
+    border-radius: 15px;
+   border: solid yellow 1px;
+   width:auto;
+}
 .homehead{
-    margin-left: 50px;
-    margin-top: 20px;
+  
 
 }
 .description{
-    margin-left: 50px;
+   
     margin-top: 15px;
-    margin-right: 50px;
+  
     font-size: 18px;
 }
 footer{
@@ -123,7 +129,11 @@ main {
     border-color: chocolate;
     border-radius: 30px;
     width: 100px;
- margin-left: 50px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-left: auto;
+margin-right: auto;
    }
    .features{
     display: flex;
@@ -136,4 +146,19 @@ main {
 .btn-primary{
     width: 120px;
     
+}
+.mybtn{
+    background: none;
+    border: none;
+    padding: none;
+    color: blue;
+    cursor: pointer;
+}
+.profile-icon a {
+    color: brown;
+    text-decoration: none;
+}
+
+.profile-icon a:hover {
+    color: black;
 }
