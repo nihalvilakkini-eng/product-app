@@ -1,12 +1,18 @@
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+
 function Header() {
-    const navigate = useNavigate();
-const role = localStorage.getItem("role");
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate("/login");
   };
+
   return (
     <header>
       <div className="logoimg">
@@ -15,23 +21,32 @@ const role = localStorage.getItem("role");
         </Link>
       </div>
 
-  <nav>
-  <Link to="/">HOME</Link>
+      <nav>
+        <Link to="/">Home</Link>
 
-  {role === "admin" && (
-    <>
-      <Link to="/add-product">ADD PRODUCT</Link>
-      <Link to="/product-view">PRODUCTS</Link>
-    </>
-  )}
-  <Link to="/login" onClick={handleLogout}>
-    LOGOUT
-  </Link>
-  
-  <Link to="/profile" className="profile-icon">
-    <FaUserCircle size={28} />
-  </Link>
-</nav>
+        {token && role === "admin" && (
+          <>
+            <Link to="/add-product">Add Product</Link>
+            <Link to="/product-view">Products</Link>
+          </>
+        )}
+
+        {token ? (
+          <Link to="/login" onClick={handleLogout}>
+            Logout
+          </Link>
+        ) : (
+          <Link to="/login">
+            Login
+          </Link>
+        )}
+
+        {token && (
+          <Link to="/profile" className="profile-icon">
+            <FaUserCircle size={28} />
+          </Link>
+        )}
+      </nav>
     </header>
   );
 }

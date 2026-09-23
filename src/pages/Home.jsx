@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../Api";
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -44,17 +46,19 @@ function Home() {
         <div className="row">
           {products.map((product) => (
             <div className="col-md-3 mb-4" key={product._id}>
+
               <div className="card">
 
                 {product.image && (
-                <img
-                    src={`http://localhost:8000/${product.image.replaceAll("\\", "/")}`}
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL}/${product.image.replaceAll("\\", "/")}`}
                     className="card-img-top"
                     alt={product.name}
                   />
                 )}
 
                 <div className="card-body">
+
                   <h5 className="card-title">
                     {product.name}
                   </h5>
@@ -65,12 +69,16 @@ function Home() {
 
                   <h6>₹{product.price}</h6>
 
-                  <button className="btn btn-primary">
+                  <button
+                    onClick={() => navigate(`/product/${product._id}`)}
+                    className="btn btn-primary"
+                  >
                     View Details
                   </button>
-                </div>
 
+                </div>
               </div>
+
             </div>
           ))}
         </div>

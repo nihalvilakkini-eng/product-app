@@ -5,7 +5,20 @@ import api from "../Api";
 function Productview() {
 
     const navigate = useNavigate();
+const handleDelete = async (id) => {
+  try {
+    await api.put(`/api/products/delete/${id}`);
 
+    alert("Product deleted successfully");
+
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product._id !== id)
+    );
+  } catch (error) {
+    console.log(error);
+    alert("Failed to delete product");
+  }
+};
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -56,6 +69,18 @@ function Productview() {
                                 }
                             >
 
+                              {product.image && (
+    <img
+        src={`${import.meta.env.VITE_BACKEND_URL}/${product.image.replaceAll("\\", "/")}`}
+        className="card-img-top"
+        alt={product.name}
+        style={{
+            height: "250px",
+            objectFit: "contain"
+        }}
+    />
+)}
+
                                 <div className="card-body">
 
                                     <h5>{product.name}</h5>
@@ -80,7 +105,13 @@ function Productview() {
                                     >
                                         Edit
                                     </button>
-
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={() => handleDelete(product._id)}
+                                        >
+                                        Delete
+                                     </button>                
                                 </div>
 
                             </div>

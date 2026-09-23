@@ -142,7 +142,7 @@ function Profile() {
                     {profile.profileImage ? (
 
                        <img
-                            src={`http://localhost:8000/${(profile.profileImage || "").replace(/\\/g, "/")}`}
+                            src={`${import.meta.env.VITE_BACKEND_URL}/${(profile.profileImage || "").replace(/\\/g, "/")}`}
                             alt="Profile"
                             width="120"
                             height="120"

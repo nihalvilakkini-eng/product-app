@@ -1,8 +1,10 @@
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "../Api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // Validation
 const schema = yup.object().shape({
@@ -19,6 +21,8 @@ const schema = yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -37,14 +41,14 @@ const Login = () => {
 
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.data.role);
-      alert("Login successful");
 
-      navigate("/")
+      navigate("/");
     } catch (error) {
       console.log(error);
 
       alert(
-        error.response?.data?.message || "Login failed"
+        error.response?.data?.message ||
+          "Invalid email or password. Please check your credentials and try again"
       );
     }
   };
@@ -66,10 +70,19 @@ const Login = () => {
                 <input
                   type="email"
                   className="form-control"
-                  placeholder="Enter your email"
-                  {...register("email")}
-                />
+                  placeholder="Enter email"
+                  {...register("email", {
+                    onChange: (e) => {
+                      let value = e.target.value;
 
+                      if (value.endsWith("@")) {
+                        value = value + "gmail.com";
+                      }
+
+                      e.target.value = value;
+                    },
+                  })}
+                 />
                 {errors.email && (
                   <p className="text-danger">
                     {errors.email.message}
@@ -81,12 +94,35 @@ const Login = () => {
               <div className="mb-3">
                 <label className="form-label">Password</label>
 
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Enter your password"
-                  {...register("password")}
-                />
+                <div className="position-relative">
+
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control"
+                    placeholder="Enter your password"
+                    {...register("password")}
+                  />
+
+                  <span
+                    onClick={() =>
+                      setShowPassword(!showPassword)
+                    }
+                    style={{
+                      position: "absolute",
+                      right: "12px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash />
+                    ) : (
+                      <FaEye />
+                    )}
+                  </span>
+
+                </div>
 
                 {errors.password && (
                   <p className="text-danger">
@@ -103,19 +139,20 @@ const Login = () => {
                 >
                   Login
                 </button>
-               
               </div>
 
             </form>
-        <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
-  <h6 className="mb-0">Don't have an account?</h6>
 
-  <Link to="/register">
-    {/* <button type="button" className="mybtn"> */}
-      Create Account
-    {/* </button> */}
-  </Link>
-</div>
+            <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
+              <h6 className="mb-0">
+                Don't have an account?
+              </h6>
+
+              <Link to="/register">
+                Create Account
+              </Link>
+            </div>
+
           </div>
         </div>
       </div>
