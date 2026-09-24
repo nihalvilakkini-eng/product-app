@@ -18,7 +18,7 @@ function AddProduct() {
   });
 
   const [submitted, setSubmitted] = useState(false);
-
+const [errors, setErrors] = useState({});
   // Get existing product when editing
   useEffect(() => {
 
@@ -56,102 +56,145 @@ function AddProduct() {
     }
   };
 
-  const handleChange = (e) => {
+const handleChange = (e) => {
+  const { name, value, files } = e.target;
 
-    const { name, value, files } = e.target;
-
+  if (name === "image") {
     setProduct((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      image: files[0],
+    }));
+    return;
+  }
+
+  // Product name - only letters and spaces
+ if (name === "name") {
+  if (/^[A-Za-z0-9\s]*$/.test(value)) {
+    setProduct((prev) => ({
+      ...prev,
+      name: value,
     }));
 
-  };
+    setErrors((prev) => ({
+      ...prev,
+      name: "",
+    }));
+  }
+  return;
+}
+  
+
+  // Price - only numbers
+  if (name === "price") {
+    if (/^[0-9]*$/.test(value)) {
+      setProduct((prev) => ({
+        ...prev,
+        price: value,
+      }));
+
+      setErrors((prev) => ({
+        ...prev,
+        price: "",
+      }));
+    }
+    return;
+  }
+
+  setProduct((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  setErrors((prev) => ({
+    ...prev,
+    [name]: "",
+  }));
+};
 
   const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    e.preventDefault();
+  const newErrors = {};
 
-    setSubmitted(true);
+ if (!product.name.trim()) {
+  newErrors.name = "Product name is required";
 
-    if (
-      !product.name.trim() ||
-      !product.price ||
-      !product.category ||
-      !product.description.trim()
-    ) {
+} else if (product.name.trim().length < 3) {
+  newErrors.name =
+    "Product name must contain at least 3 characters";
 
-      alert("Please fill all fields");
-      return;
+} else if (!/[A-Za-z]/.test(product.name)) {
+  newErrors.name =
+    "Product name cannot contain only numbers";
+}
+  if (!product.price) {
+    newErrors.price = "Price is required";
+  } else if (Number(product.price) <= 0) {
+    newErrors.price = "Price must be greater than 0";
+  }
 
+  if (!product.category) {
+    newErrors.category = "Please select a category";
+  }
+
+  if (!product.description.trim()) {
+    newErrors.description = "Description is required";
+  } else if (product.description.trim().length < 5) {
+    newErrors.description =
+      "Description must contain at least 5 characters";
+  }
+
+  setErrors(newErrors);
+
+  // Stop if errors exist
+  if (Object.keys(newErrors).length > 0) {
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+
+    formData.append("name", product.name.trim());
+    formData.append("price", product.price);
+    formData.append("category", product.category);
+    formData.append(
+      "description",
+      product.description.trim()
+    );
+
+    if (product.image) {
+      formData.append("image", product.image);
     }
 
-    if (product.name.trim().length < 3) {
-
-      alert("Product name must contain at least 3 characters");
-      return;
-
-    }
-
-    try {
-
-      const formData = new FormData();
-
-      formData.append("name", product.name.trim());
-      formData.append("price", product.price);
-      formData.append("category", product.category);
-      formData.append(
-        "description",
-        product.description.trim()
+    if (isEdit) {
+      const response = await api.put(
+        `/api/products/update/${id}`,
+        formData
       );
 
-      // Add image only if a new image is selected
-      if (product.image) {
-        formData.append("image", product.image);
-      }
-
-      if (isEdit) {
-
-        // UPDATE PRODUCT
-
-        const response = await api.put(
-          `/api/products/update/${id}`,
-          formData
-        );
-
-        console.log("Product updated:", response.data);
-
-        alert("Product updated successfully");
-
-      } else {
-
-        // ADD PRODUCT
-
-        const response = await api.post(
-          "/api/products/add",
-          formData
-        );
-
-        console.log("Product added:", response.data);
-
-        alert("Product added successfully");
-
-      }
-
-      navigate("/product-view");
-
-    } catch (error) {
-
-      console.error("Product error:", error);
-
-      alert(
-        error.response?.data?.message ||
-        "Something went wrong"
+      console.log("Product updated:", response.data);
+      alert("Product updated successfully");
+    } else {
+      const response = await api.post(
+        "/api/products/add",
+        formData
       );
 
+      console.log("Product added:", response.data);
+      alert("Product added successfully");
     }
 
-  };
+    navigate("/product-view");
 
+  } catch (error) {
+    console.error("Product error:", error);
+
+    alert(
+      error.response?.data?.message ||
+      "Something went wrong"
+    );
+  }
+};
   return (
 
     <div className="container mt-4">
@@ -178,11 +221,11 @@ function AddProduct() {
             placeholder="Enter product name"
           />
 
-          {submitted && !product.name.trim() && (
-            <small className="text-danger">
-              Product name is required
-            </small>
-          )}
+         {errors.name && (
+  <small className="text-danger">
+    {errors.name}
+  </small>
+)}
 
         </div>
 
@@ -193,16 +236,21 @@ function AddProduct() {
             Price
           </label>
 
-          <input
-            type="number"
-            name="price"
-            className="form-control"
-            value={product.price}
-            onChange={handleChange}
-            placeholder="Enter price"
-            min="0"
-          />
+         <input
+  type="text"
+  name="price"
+  className="form-control"
+  value={product.price}
+  onChange={handleChange}
+  placeholder="Enter price"
+  inputMode="numeric"
+/>
 
+{errors.price && (
+  <small className="text-danger">
+    {errors.price}
+  </small>
+)}
         </div>
 
         {/* Category */}
@@ -212,43 +260,26 @@ function AddProduct() {
             Category
           </label>
 
-          <select
-            name="category"
-            className="form-control"
-            value={product.category}
-            onChange={handleChange}
-          >
+         <select
+  name="category"
+  className="form-control"
+  value={product.category}
+  onChange={handleChange}
+>
+  <option value="">Select Category</option>
+  <option value="Electronics">Electronics</option>
+  <option value="Clothing">Clothing</option>
+  <option value="Shoes">Shoes</option>
+  <option value="Books">Books</option>
+  <option value="Accessories">Accessories</option>
+  <option value="Other">Other</option>
+</select>
 
-            <option value="">
-              Select Category
-            </option>
-
-            <option value="Electronics">
-              Electronics
-            </option>
-
-            <option value="Clothing">
-              Clothing
-            </option>
-
-            <option value="Shoes">
-              Shoes
-            </option>
-
-            <option value="Books">
-              Books
-            </option>
-
-            <option value="Accessories">
-              Accessories
-            </option>
-
-            <option value="Other">
-              Other
-            </option>
-
-          </select>
-
+{errors.category && (
+  <small className="text-danger">
+    {errors.category}
+  </small>
+)}
         </div>
 
         {/* Description */}
@@ -258,14 +289,20 @@ function AddProduct() {
             Description
           </label>
 
-          <textarea
-            name="description"
-            className="form-control"
-            value={product.description}
-            onChange={handleChange}
-            placeholder="Enter product description"
-            rows="4"
-          />
+         <textarea
+  name="description"
+  className="form-control"
+  value={product.description}
+  onChange={handleChange}
+  placeholder="Enter product description"
+  rows="4"
+/>
+
+{errors.description && (
+  <small className="text-danger">
+    {errors.description}
+  </small>
+)}
 
         </div>
 

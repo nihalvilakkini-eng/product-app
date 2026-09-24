@@ -55,60 +55,101 @@ function Profile() {
     };
 
     const handleChange = (e) => {
+    const { name, value, files } = e.target;
 
-        const { name, value, files } = e.target;
-
+    // Profile image
+    if (name === "profileImage") {
         setFormData((prev) => ({
             ...prev,
-            [name]: files ? files[0] : value,
+            profileImage: files[0],
         }));
+        return;
+    }
 
-    };
+    // First name and last name - only letters and spaces
+    if (name === "firstName" || name === "lastName") {
+        if (/^[A-Za-z\s]*$/.test(value)) {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
+        return;
+    }
 
-    const handleUpdate = async (e) => {
+    // Phone - only numbers
+    if (name === "phone") {
+        if (/^[0-9]*$/.test(value)) {
+            setFormData((prev) => ({
+                ...prev,
+                phone: value,
+            }));
+        }
+        return;
+    }
 
-        e.preventDefault();
+    setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+    }));
+};
 
-        try {
+   const handleUpdate = async (e) => {
+    e.preventDefault();
 
-            const data = new FormData();
+    // First name validation
+    if (formData.firstName.trim().length < 3) {
+        alert("First name must be at least 3 characters");
+        return;
+    }
 
-            data.append("firstName", formData.firstName);
-            data.append("lastName", formData.lastName);
-            data.append("phone", formData.phone);
+    // Last name validation
+    if (formData.lastName.trim().length < 1) {
+        alert("Last name is required");
+        return;
+    }
 
-            if (formData.profileImage) {
-                data.append(
-                    "profileImage",
-                    formData.profileImage
-                );
-            }
+    // Phone validation
+    if (!/^[0-9]{10}$/.test(formData.phone)) {
+        alert("Phone number must be exactly 10 digits");
+        return;
+    }
 
-            const response = await api.put(
-                "/api/auth/updateprofile",
-                data
+    try {
+        const data = new FormData();
+
+        data.append("firstName", formData.firstName);
+        data.append("lastName", formData.lastName);
+        data.append("phone", formData.phone);
+
+        if (formData.profileImage) {
+            data.append(
+                "profileImage",
+                formData.profileImage
             );
-
-            console.log("Updated profile:", response.data);
-
-            alert("Profile updated successfully");
-
-            setProfile(response.data.data);
-
-            setEditMode(false);
-
-        } catch (error) {
-
-            console.error("Update profile error:", error);
-
-            alert(
-                error.response?.data?.message ||
-                "Profile update failed"
-            );
-
         }
 
-    };
+        const response = await api.put(
+            "/api/auth/updateprofile",
+            data
+        );
+
+        console.log("Updated profile:", response.data);
+
+        alert("Profile updated successfully");
+
+        setProfile(response.data.data);
+        setEditMode(false);
+
+    } catch (error) {
+        console.error("Update profile error:", error);
+
+        alert(
+            error.response?.data?.message ||
+            "Profile update failed"
+        );
+    }
+};
 
     if (loading) {
         return (
@@ -253,12 +294,16 @@ function Profile() {
                                 Phone
                             </label>
 
-                            <input
+                          <input
                                 type="text"
                                 name="phone"
                                 className="form-control"
                                 value={formData.phone}
                                 onChange={handleChange}
+                                placeholder="Enter phone number"
+                                inputMode="numeric"
+                                maxLength={10}
+                                required
                             />
 
                         </div>

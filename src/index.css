@@ -1,164 +1,387 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-
-
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 50px;
-    background-color:aquamarine;
+body {
+  font-family: Arial, sans-serif;
+  background: #f5fcff;
+  color: #123;
 }
 
-header h2 {
-    color: yellow;
-}
+/* APP */
 
-nav {
-    display: flex;
-    gap: 20px;
-}
-
-nav a {
-    color:brown;
-    text-decoration: none;
-}
-nav a:hover {
-    background-color: #ddd;
-   
-    border-radius: 15px;
-   border: solid yellow 1px;
-   width:auto;
-}
-.homehead{
-  
-
-}
-.description{
-   
-    margin-top: 15px;
-  
-    font-size: 18px;
-}
-footer{
-    margin-top: auto;
-    background-color: aquamarine;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-    height:70px;
-    text-align: center;
-}
-footer h3,
-footer p{
-    margin: 6px 0;
-    font-size: 12px;
-
-}
-main{
-    flex: 1;
-}
-.app{
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-form{
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    margin: 30px auto;
-    gap: 10px;
-}
-input,
-textarea
-{
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-button{
-    height: 30px;
-    width: 30%;
-    background-color: chocolate;
-}
-.add-product{
-    margin-left: 50px;
-}
+.app,
 .app-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-    flex: 1; 
-}
-.logoimg img{
-    width: 50px;
-    height: 50px;
-}
-.homeimgs img{
-    width: 300px;
-    height: 300px;
-    margin-left: 50px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+  flex: 1;
 }
 
-.product-card{
-    border : 1px solid black;
-    margin-left: 50px;
-    margin-bottom: 50px;
+/* HEADER */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: linear-gradient(135deg, #023e8a, #00b4d8);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
 }
-.viewhead{
-   display: flex;
-   justify-content: center;
-   align-items: center;
+
+header h2 {
+  color: white;
+  margin: 0;
 }
-   .shopnow{
-    border: solid 1px;
-    background-color:white;
-    color: chocolate;
-    margin-top: 20px;
-    border-color: chocolate;
-    border-radius: 30px;
-    width: 100px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    margin-left: auto;
-margin-right: auto;
-   }
-   .features{
-    display: flex;
-    justify-content: center;
-   
-   }
-   .card-img-top{
-    height: 200px;
-   }
-.btn-primary{
-    width: 120px;
-    
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
-.mybtn{
-    background: none;
-    border: none;
-    padding: none;
-    color: blue;
-    cursor: pointer;
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.3s;
 }
+
+nav a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* LOGO */
+
+.logoimg img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* PROFILE */
+
 .profile-icon a {
-    color: brown;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .profile-icon a:hover {
-    color: black;
+  color: #caf0f8;
+}
+
+/* HOME */
+
+.home-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f5fcff, #caf0f8);
+  animation: fadeIn 0.7s ease;
+}
+
+/* HERO */
+
+.hero-section {
+  background: linear-gradient(135deg, #023e8a, #00b4d8);
+  color: white;
+  border-radius: 25px;
+  padding: 60px 40px;
+  margin-bottom: 45px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(2, 62, 138, 0.2);
+  animation: heroAnimation 0.8s ease;
+}
+
+.hero-section h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.hero-section p {
+  font-size: 18px;
+}
+
+/* SHOP NOW */
+
+.shopnow {
+  border: none;
+  background: white;
+  color: #023e8a;
+  margin: 20px auto 0;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.shopnow:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* PRODUCTS */
+
+.products-title {
+  color: #023e8a;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* PRODUCT CARD */
+
+.product-card {
+  background: white;
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+  animation: cardAppear 0.6s ease both;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 180, 216, 0.25);
+}
+
+/* PRODUCT IMAGE */
+
+.product-card img,
+.card-img-top {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.06);
+}
+
+/* CARD BODY */
+
+.product-card .card-body {
+  padding: 20px;
+}
+
+.product-card h5 {
+  color: #023e8a;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  color: #00a6c7;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* CATEGORY */
+
+.product-category {
+  display: inline-block;
+  background: #caf0f8;
+  color: #023e8a;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* VIEW PRODUCT BUTTON */
+
+.view-product-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 12px;
+  background: linear-gradient(135deg, #023e8a, #00b4d8);
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.view-product-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 180, 216, 0.35);
+}
+
+/* FORMS */
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 90%;
+  margin: 30px auto;
+  gap: 10px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b7dfe8;
+  border-radius: 8px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #00b4d8;
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15);
+}
+
+/* BUTTON */
+
+button {
+  cursor: pointer;
+}
+
+.btn-primary {
+  width: 120px;
+  background: linear-gradient(135deg, #023e8a, #00b4d8);
+  border: none;
+}
+
+/* ADD PRODUCT */
+
+.add-product {
+  margin-left: 50px;
+}
+
+/* PRODUCT VIEW */
+
+.viewhead {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #023e8a;
+}
+
+/* FEATURES */
+
+.features {
+  display: flex;
+  justify-content: center;
+}
+
+/* CUSTOM BUTTON */
+
+.mybtn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #023e8a;
+  cursor: pointer;
+}
+
+/* FOOTER */
+
+footer {
+  margin-top: auto;
+  background: linear-gradient(135deg, #023e8a, #00b4d8);
+  color: white;
+  min-height: 70px;
+  text-align: center;
+  padding: 12px;
+}
+
+footer h3,
+footer p {
+  margin: 6px 0;
+  font-size: 12px;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  header {
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .home-container {
+    padding: 25px 15px;
+  }
+
+  .hero-section {
+    padding: 40px 20px;
+  }
+
+  .hero-section h1 {
+    font-size: 30px;
+  }
+
+  .hero-section p {
+    font-size: 16px;
+  }
+
+  form {
+    width: 90%;
+  }
+
+  .product-card img,
+  .card-img-top {
+    height: 200px;
+  }
 }

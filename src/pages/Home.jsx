@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../Api";
 
+
 function Home() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
@@ -22,13 +23,13 @@ function Home() {
 
   return (
     <main>
-      <div className="container">
+      <div className="container home-container">
 
-        <h1 className="homehead d-flex justify-content-center align-items-center">
+        <h1 className="hero-section homehead d-flex justify-content-center align-items-center">
           Find Products You Love
         </h1>
 
-        <p className="description d-flex justify-content-center align-items-center">
+        <p className="hero-section description d-flex justify-content-center align-items-center">
           Quality products at great prices.
         </p>
 
@@ -57,9 +58,9 @@ function Home() {
                   />
                 )}
 
-                <div className="card-body">
+                <div className="card product-card">
 
-                  <h5 className="card-title">
+                  <h5 className="products-title">
                     {product.name}
                   </h5>
 
@@ -67,11 +68,11 @@ function Home() {
                     {product.description}
                   </p>
 
-                  <h6>₹{product.price}</h6>
+                  <h6 className="product-price">₹{product.price}</h6>
 
                   <button
                     onClick={() => navigate(`/product/${product._id}`)}
-                    className="btn btn-primary"
+                    className="view-product-btn"
                   >
                     View Details
                   </button>

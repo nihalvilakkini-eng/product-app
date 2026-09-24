@@ -18,19 +18,72 @@ const [showPassword, setShowPassword] = useState(false);
     role: "user",
   });
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
+ const handleChange = (e) => {
+  const { name, value, files } = e.target;
 
+  // Profile image
+  if (name === "profileImage") {
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      profileImage: files[0],
     });
-  };
+    return;
+  }
 
-  const handleSubmit = async (e) => {
+  // First name and last name - only letters and spaces
+  if (name === "firstName" || name === "lastName") {
+    if (/^[A-Za-z\s]*$/.test(value)) {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+    return;
+  }
+
+  // Phone - only numbers
+  if (name === "phone") {
+    if (/^[0-9]*$/.test(value)) {
+      setFormData({
+        ...formData,
+        phone: value,
+      });
+    }
+    return;
+  }
+
+  // Other fields
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+};
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  console.log("FORM DATA:", formData);
+  // First name validation
+  if (formData.firstName.trim().length < 3) {
+    alert("First name must be at least 3 characters");
+    return;
+  }
+
+  // Last name validation
+  if (formData.lastName.trim().length < 1) {
+    alert("Last name is required");
+    return;
+  }
+
+  // Password validation
+  if (formData.password.length < 8) {
+    alert("Password must be at least 8 characters");
+    return;
+  }
+
+  // Phone validation
+  if (!/^[0-9]{10}$/.test(formData.phone)) {
+    alert("Phone number must be exactly 10 digits");
+    return;
+  }
 
   try {
     const data = new FormData();
@@ -51,12 +104,13 @@ const [showPassword, setShowPassword] = useState(false);
       data
     );
 
-    // alert(response.data.message || "Registration successful");
+    alert(response.data.message || "Registration successful");
+
     navigate("/login");
 
   } catch (error) {
-    
     console.log(error);
+
     alert(
       error.response?.data?.message ||
       "Registration failed"
@@ -101,27 +155,20 @@ const [showPassword, setShowPassword] = useState(false);
 
             <div className="mb-3">
               <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            value={formData.email}
-            onChange={(e) => {
-              let value = e.target.value;
-
-              if (value.includes("@") && !value.includes("@gmail.com")) {
-                const [username] = value.split("@");
-                value = username + "@gmail.com";
-              }
-
-              setFormData({
-                ...formData,
-                email: value
-              });
-            }}
-            placeholder="Enter email"
-            required
-          />
+         <input 
+  type="email" 
+  name="email" 
+  className="form-control" 
+  value={formData.email} 
+  onChange={(e) => {
+    setFormData({
+      ...formData,
+      email: e.target.value
+    });
+  }} 
+  placeholder="Enter email" 
+  required 
+/>
             </div>
 
            <div className="mb-3">
@@ -166,15 +213,15 @@ const [showPassword, setShowPassword] = useState(false);
 
             <div className="mb-3">
               <label>Phone Number</label>
-              <input
+             <input
                 type="text"
                 name="phone"
                 className="form-control"
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Enter phone number"
-                 inputMode="numeric"
-                 maxLength={12}
+                inputMode="numeric"
+                maxLength={10}
                 required
               />
             </div>
